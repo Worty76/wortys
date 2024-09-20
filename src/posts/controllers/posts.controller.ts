@@ -26,8 +26,8 @@ export class PostsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.postsService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    return await this.postsService.findOne(id);
   }
 
   @Patch(':id')

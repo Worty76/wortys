@@ -18,9 +18,12 @@ export class UserEntity implements IUser {
   name: string;
 
   @Column()
+  email: string;
+
+  @Column()
   password: string;
 
-  @Column({ type: 'enum', enum: Roles, array: true, default: [Roles.USER] })
+  @Column({ type: 'enum', enum: Roles, array: true, default: Roles.USER })
   role: Roles;
 
   @OneToMany(() => PostEntity, (post) => post.author)
