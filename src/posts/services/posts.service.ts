@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { CreatePostDto } from '../dto/create-post.dto';
-import { UpdatePostDto } from '../dto/update-post.dto';
+import { CreatePostDto } from '../dto';
+import { UpdatePostDto } from '../dto';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PostEntity } from '../entities';
@@ -14,6 +14,7 @@ export class PostsService {
 
   create(createPostDto: CreatePostDto) {
     const post = this.postsRepository.create(createPostDto);
+
     return this.postsRepository.save(post);
   }
 

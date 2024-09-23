@@ -1,4 +1,4 @@
-import { IsString } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
 import { UserEntity } from 'src/users/entities';
 
 export class CreatePostDto {
@@ -11,5 +11,6 @@ export class CreatePostDto {
   @IsString()
   description: string;
 
+  @IsNotEmpty()
   author: UserEntity;
 }

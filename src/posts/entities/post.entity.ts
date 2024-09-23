@@ -4,10 +4,12 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { IPost } from '../interfaces';
 import { Optional } from '@nestjs/common';
+import { CommentEntity } from 'src/comments/entities/comment.entity';
 
 @Entity('posts')
 export class PostEntity implements IPost {
@@ -25,6 +27,10 @@ export class PostEntity implements IPost {
   description?: string;
 
   @ManyToOne(() => UserEntity, (user) => user.posts)
-  @JoinColumn({ name: 'user_id' })
+  @JoinColumn({ name: 'userId' })
   author: UserEntity;
+
+  @OneToMany(() => CommentEntity, (comment) => comment.postId)
+  @JoinColumn()
+  comments?: CommentEntity[];
 }

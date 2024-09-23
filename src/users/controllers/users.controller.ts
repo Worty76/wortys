@@ -8,8 +8,8 @@ import {
   Delete,
 } from '@nestjs/common';
 import { UsersService } from '../services';
-import { CreateUserDto } from '../dto/create-user.dto';
-import { UpdateUserDto } from '../dto/update-user.dto';
+import { CreateUserDto } from '../dto/requests/create-user.dto';
+import { UpdateUserDto } from '../dto/requests/update-user.dto';
 
 @Controller('users')
 export class UsersController {
@@ -20,8 +20,10 @@ export class UsersController {
     return await this.usersService.create(createUserDto);
   }
 
-  @Get()
-  findAll() {}
+  @Get('/')
+  async findAll() {
+    return await this.usersService.findAll();
+  }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
