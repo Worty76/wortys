@@ -21,8 +21,8 @@ export class CommentsController {
   }
 
   @Get()
-  findAll() {
-    return this.commentsService.findAll();
+  async findAll() {
+    return await this.commentsService.findAll();
   }
 
   @Get(':id')

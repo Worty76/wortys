@@ -9,6 +9,7 @@ import { Roles } from '../utility/common/user-roles.enum';
 import { PostEntity } from 'src/posts/entities';
 import { IUser } from '../interfaces';
 import { CommentEntity } from 'src/comments/entities/comment.entity';
+import { LikeEntity } from 'src/likes/entities';
 
 @Entity('users')
 export class UserEntity implements IUser {
@@ -34,4 +35,8 @@ export class UserEntity implements IUser {
   @OneToMany(() => CommentEntity, (comment) => comment.author)
   @JoinColumn()
   comments?: CommentEntity[];
+
+  @OneToMany(() => LikeEntity, (like) => like.author)
+  @JoinColumn()
+  likes?: LikeEntity[];
 }

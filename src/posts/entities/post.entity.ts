@@ -10,6 +10,7 @@ import {
 import { IPost } from '../interfaces';
 import { Optional } from '@nestjs/common';
 import { CommentEntity } from 'src/comments/entities/comment.entity';
+import { LikeEntity } from 'src/likes/entities';
 
 @Entity('posts')
 export class PostEntity implements IPost {
@@ -26,11 +27,17 @@ export class PostEntity implements IPost {
   @Optional()
   description?: string;
 
-  @ManyToOne(() => UserEntity, (user) => user.posts)
+  @ManyToOne(() => UserEntity, (user) => user.posts, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'userId' })
   author: UserEntity;
 
   @OneToMany(() => CommentEntity, (comment) => comment.postId)
   @JoinColumn()
   comments?: CommentEntity[];
+
+  @OneToMany(() => LikeEntity, (like) => like.postId)
+  @JoinColumn()
+  likes?: LikeEntity[];
 }

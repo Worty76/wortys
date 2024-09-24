@@ -6,6 +6,6 @@ export interface IPost {
   title: string;
   content: string;
   description?: string;
-  author?: UserEntity;
+  author: UserEntity;
   comments?: CommentEntity[];
 }

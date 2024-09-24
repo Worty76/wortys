@@ -20,7 +20,6 @@ export class CommentsService {
 
   async create(createCommentDto: CreateCommentDto) {
     const user = createCommentDto.author;
-    console.log(createCommentDto);
     const isUserExist = await this.usersRepository.exists({
       where: { id: user.id },
     });
@@ -40,14 +39,14 @@ export class CommentsService {
     return await this.commentsRepository.save(comment);
   }
 
-  findAll() {
-    return `This action returns all comments`;
+  async findAll() {
+    return await this.commentsRepository.find({});
   }
 
   findOne(id: string) {
     const comment = this.commentsRepository.findOne({
       where: { id },
-      relations: ['author', 'postId'],
+      relations: ['author', 'postId', 'commentFatherId'],
     });
     return comment;
   }

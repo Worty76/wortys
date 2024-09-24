@@ -3,6 +3,7 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { IComment } from '../interfaces';
@@ -17,11 +18,25 @@ export class CommentEntity implements IComment {
   @Column()
   content: string;
 
-  @ManyToOne(() => UserEntity, (user) => user.comments)
+  @OneToMany(() => CommentEntity, (comment) => comment.commentFatherId)
+  @JoinColumn()
+  comments?: CommentEntity[];
+
+  @ManyToOne(() => CommentEntity, (comment) => comment.comments, {
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'commentFatherId' })
+  commentFatherId?: CommentEntity;
+
+  @ManyToOne(() => UserEntity, (user) => user.comments, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'userId' })
   author: UserEntity;
 
-  @ManyToOne(() => PostEntity, (post) => post.comments)
+  @ManyToOne(() => PostEntity, (post) => post.comments, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'postId' })
   postId: PostEntity;
 }

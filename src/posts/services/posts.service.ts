@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreatePostDto } from '../dto';
 import { UpdatePostDto } from '../dto';
 import { Repository } from 'typeorm';
@@ -26,16 +26,26 @@ export class PostsService {
   findOne(id: string) {
     const post = this.postsRepository.findOne({
       where: { id },
-      relations: ['author'],
+      relations: ['author', 'comments', 'likes'],
     });
     return post;
   }
 
-  update(id: number, updatePostDto: UpdatePostDto) {
-    return `This action updates a #${id} post`;
+  async update(id: string, updatePostDto: UpdatePostDto) {
+    const post = await this.postsRepository.findOneBy({ id });
+
+    post.title = updatePostDto.title;
+    post.content = updatePostDto.content;
+    post.description = updatePostDto.description;
+
+    const newPost = this.postsRepository.create(post);
+    return this.postsRepository.save(newPost);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} post`;
+  async remove(id: string) {
+    const post = await this.postsRepository.findOneBy({ id });
+
+    if (!post) throw new BadRequestException('Post is not exist!');
+    return await this.postsRepository.remove(post);
   }
 }
